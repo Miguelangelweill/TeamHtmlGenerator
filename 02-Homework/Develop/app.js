@@ -10,14 +10,97 @@ const outputPath = path.join(OUTPUT_DIR, "team.html");
 
 const render = require("./lib/htmlRenderer");
 
-
 // Write code to use inquirer to gather information about the development team members,
 // and to create objects for each team member (using the correct classes as blueprints!)
+let myEmployeeArr = [];
+//These are all of my questions
+const allQuestions = async () => {
+  //These are the questions that are required for all of the members
+  const requiredQuestion = [
+    {
+      type: "input",
+      message: "What is your name?",
+      name: "name",
+    },
+    {
+      type: "input",
+      message: "Pelease provide us with your email",
+      name: "email",
+    },
+    {
+      type: "input",
+      message: "What is your ID?",
+      name: "ID",
+    },
+    {
+      type: "list",
+      message: "What is your role in this project?",
+      name: "role",
+      choices: ["Manager", "Engineer", "Intern"],
+    },
+  ];
+
+  //These are the questions required if you ara an inter
+  const interQuestions = [
+    {
+      type: "input",
+      message: "What school do you currently attend to?",
+      name: "school",
+    },
+  ];
+  //These are the questions for my engineer
+  const engineerQuestions = [
+    {
+      type: "input",
+      message: "What is your git hub username?",
+      name: "github",
+    },
+  ];
+
+  const managerQuestions = [
+    {
+      type: "input",
+      message: "Please provide us with your office number",
+      name: "office",
+    },
+  ];
+  const addMemberQuestion = [
+    {
+      type: "confirm",
+      message: "Would you like to add another team memeber?",
+      name: "anotherColaborator",
+    },
+  ];
+
+  const firstAnswer = await inquirer.prompt(requiredQuestion);
+
+  let myRole;
+
+  if (firstAnswer.role === "Manager") {
+    myRole = await inquirer.prompt(managerQuestions);
+  } else if (firstAnswer.role === "Engineer"){
+    myRole = await inquirer.prompt(engineerQuestions)
+  } else if (firstAnswer.role === "Intern") {
+    myRole = await inquirer.prompt(interQuestions)
+  }
+
+  myEmployeeArr.push(firstAnswer,myRole)
+  const addMember = await inquirer.prompt(addMemberQuestion);
+
+  if (addMember.anotherColaborator===true){
+    allQuestions()
+  }else{
+    console.log("Your html has been created")
+  }
+
+};
+
+allQuestions()
 
 // After the user has input all employees desired, call the `render` function (required
 // above) and pass in an array containing all employee objects; the `render` function will
 // generate and return a block of HTML including templated divs for each employee!
-
+render(myEmployeeArr)
 // After you have your html, you're now ready to create an HTML file using the HTML
 // returned from the `render` function. Now write it to a file named `team.html` in the
 // `output` folder. You can use the variable `outputPath` above target this location.

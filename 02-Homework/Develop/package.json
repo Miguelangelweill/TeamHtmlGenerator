@@ -14,7 +14,7 @@
     "type": "git",
     "url": "git+https://github.com/stevetrilogy/unit10hw.git"
   },
-  "author": "",
+  "author": "Miguelangel Weill",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/stevetrilogy/unit10hw/issues"
@@ -25,5 +25,8 @@
   },
   "devDependencies": {
     "jest": "^24.8.0"
-  }
+  },
+  "keywords": [
+    "pineapple"
+  ]
 }
