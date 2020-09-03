@@ -1,6 +1,6 @@
 const path = require("path");
 const fs = require("fs");
-
+//absolute path of the computer sistem to the current folder, and the way to use
 const templatesDir = path.resolve(__dirname, "../templates");
 
 const render = employees => {
@@ -64,3 +64,4 @@ const replacePlaceholders = (template, placeholder, value) => {
 };
 
 module.exports = render;
+

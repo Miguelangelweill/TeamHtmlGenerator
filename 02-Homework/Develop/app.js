@@ -30,7 +30,7 @@ const allQuestions = async () => {
     {
       type: "input",
       message: "What is your ID?",
-      name: "ID",
+      name: "id",
     },
     {
       type: "list",
@@ -83,11 +83,11 @@ const allQuestions = async () => {
   } else if (firstAnswer.role === "Intern") {
     myRole = await inquirer.prompt(interQuestions)
   }
-
+  //here i am pushing to the employee array
   myEmployeeArr.push(firstAnswer,myRole)
   const addMember = await inquirer.prompt(addMemberQuestion);
 
-  if (addMember.anotherColaborator===true){
+  if (addMember.anotherColaborator){
     allQuestions()
   }else{
     console.log("Your html has been created")
@@ -107,6 +107,8 @@ render(myEmployeeArr)
 // Hint: you may need to check if the `output` folder exists and create it if it
 // does not.
 
+
+
 // HINT: each employee type (manager, engineer, or intern) has slightly different
 // information; write your code to ask different questions via inquirer depending on
 // employee type.
@@ -116,3 +118,4 @@ render(myEmployeeArr)
 // for further information. Be sure to test out each class and verify it generates an
 // object with the correct structure and methods. This structure will be crucial in order
 // for the provided `render` function to work! ```
+module.exports=allQuestions,myEmployeeArr;
