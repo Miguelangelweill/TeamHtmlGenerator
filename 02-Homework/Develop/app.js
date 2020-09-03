@@ -92,10 +92,10 @@ const allQuestions = async () => {
   }else{
     console.log("Your html has been created")
   }
-
 };
 
 allQuestions()
+
 
 // After the user has input all employees desired, call the `render` function (required
 // above) and pass in an array containing all employee objects; the `render` function will
@@ -118,4 +118,4 @@ render(myEmployeeArr)
 // for further information. Be sure to test out each class and verify it generates an
 // object with the correct structure and methods. This structure will be crucial in order
 // for the provided `render` function to work! ```
-module.exports=allQuestions,myEmployeeArr;
+module.exports=myEmployeeArr;
