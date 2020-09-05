@@ -76,6 +76,11 @@ const allQuestions = async () => {
 
     const firstAnswer = await inquirer.prompt(requiredQuestion);
 
+    fs.readFile(outputPath, "utf8", function (err, data) {
+      if (err) {
+        begginingHtml();
+      }
+    });
     let myRole;
     let managerInfo;
     let engineerInfo;
@@ -88,11 +93,10 @@ const allQuestions = async () => {
         firstAnswer.id,
         firstAnswer.email,
         myRole.office
-        
       );
       console.log(managerInfo);
       console.log(managerInfo.getRole());
-      createMember(managerInfo)
+      createMember(managerInfo);
     } else if (firstAnswer.role === "Engineer") {
       myRole = await inquirer.prompt(engineerQuestions);
       engineerInfo = new Engineer(
@@ -103,7 +107,7 @@ const allQuestions = async () => {
       );
       console.log(engineerInfo);
       console.log(engineerInfo.getRole());
-      createMember(engineerInfo)
+      createMember(engineerInfo);
     } else if (firstAnswer.role === "Intern") {
       myRole = await inquirer.prompt(interQuestions);
       internInfo = new Intern(
@@ -114,8 +118,7 @@ const allQuestions = async () => {
       );
       console.log(internInfo);
       console.log(internInfo.getRole());
-      createMember(internInfo)
-      
+      createMember(internInfo);
     }
     //here i am pushing to the employee array
     myEmployeeArr.push(myRole);
@@ -123,11 +126,10 @@ const allQuestions = async () => {
     const addMember = await inquirer.prompt(addMemberQuestion);
 
     if (addMember.anotherColaborator) {
-      allQuestions();      
+      allQuestions();
     } else {
       console.log("Your html has been created");
-      finishHtml()
-      
+      finishHtml();
     }
   } catch (err) {
     return console.log(err);
@@ -148,12 +150,31 @@ const allQuestions = async () => {
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="style.css">
     <script src="https://kit.fontawesome.com/c502137733.js"></script>
+    <style>
+        .card{
+            margin: 3%;
+            min-width: 300px;
+            display: inline-block
+        }
+        #header{
+            background-color: black;
+            color:whitesmoke;
+            height: 10vh;
+            padding-top: 2vh;
+        }
+        body{
+            background-image: url('https://images.unsplash.com/photo-1506718468845-7578aa47670b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60');
+            background-repeat: no-repeat;
+            background-size: cover;
+            
+        }
+    </style>
 </head>
 
 <body>
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-12 jumbotron mb-3 team-heading">
+    <div  class="container-fluid">
+        <div  class="row">
+            <div id="header" class="col-12 mb-3 team-heading">
                 <h1 class="text-center">My Team</h1>
             </div>
         </div>
@@ -165,8 +186,6 @@ const allQuestions = async () => {
       fs.appendFile(outputPath, header, function (err) {
         if (err) {
           console.log("Eroor on the header: ", err);
-        } else {
-          console.log("The header has been appended succesfully!!");
         }
       });
     } catch (err) {
@@ -204,7 +223,7 @@ const allQuestions = async () => {
             return resolve;
           }
         });
-      } else if (role === "Engineer"){
+      } else if (role === "Engineer") {
         const github = member.getGithub();
         cardInfo = `
         <div class="card employee-card">
@@ -255,27 +274,24 @@ const allQuestions = async () => {
       }
     });
   }
-  function finishHtml(){
-    try{
-          const footer=`
+  function finishHtml() {
+    try {
+      const footer = `
+      </div>
     </body>
-    </html>`
-    fs.appendFile(outputPath, footer, function (err) {
-      if (err) {
-        console.log("Eroor on the footer: ", err);
-      } else {
-        console.log("The footer has succesfully been appended ");
-      }
-    });
-    }catch(err){
-      console.log("Error",err)
+    </html>`;
+      fs.appendFile(outputPath, footer, function (err) {
+        if (err) {
+          console.log("Eroor on the footer: ", err);
+        } 
+      });
+    } catch (err) {
+      console.log("Error", err);
     }
-
   }
 };
 
 allQuestions();
-
 
 // After the user has input all employees desired, call the `render` function (required
 // above) and pass in an array containing all employee objects; the `render` function will
