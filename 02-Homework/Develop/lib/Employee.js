@@ -24,6 +24,5 @@ class Employee {
   }
 }
 //Here i am passing the argumnets to employee
-const employee = new Employee ("miguel","id","miguelangl");
 
 module.exports = Employee;

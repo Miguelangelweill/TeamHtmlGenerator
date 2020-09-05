@@ -13,101 +13,274 @@ const render = require("./lib/htmlRenderer");
 // Write code to use inquirer to gather information about the development team members,
 // and to create objects for each team member (using the correct classes as blueprints!)
 let myEmployeeArr = [];
+
 //These are all of my questions
 const allQuestions = async () => {
   //These are the questions that are required for all of the members
-  const requiredQuestion = [
-    {
-      type: "input",
-      message: "What is your name?",
-      name: "name",
-    },
-    {
-      type: "input",
-      message: "Pelease provide us with your email",
-      name: "email",
-    },
-    {
-      type: "input",
-      message: "What is your ID?",
-      name: "id",
-    },
-    {
-      type: "list",
-      message: "What is your role in this project?",
-      name: "role",
-      choices: ["Manager", "Engineer", "Intern"],
-    },
-  ];
+  try {
+    const requiredQuestion = [
+      {
+        type: "input",
+        message: "What is your name?",
+        name: "name",
+      },
+      {
+        type: "input",
+        message: "What is your ID?",
+        name: "id",
+      },
+      {
+        type: "input",
+        message: "Pelease provide us with your email",
+        name: "email",
+      },
+      {
+        type: "list",
+        message: "What is your role in this project?",
+        name: "role",
+        choices: ["Manager", "Engineer", "Intern"],
+      },
+    ];
 
-  //These are the questions required if you ara an inter
-  const interQuestions = [
-    {
-      type: "input",
-      message: "What school do you currently attend to?",
-      name: "school",
-    },
-  ];
-  //These are the questions for my engineer
-  const engineerQuestions = [
-    {
-      type: "input",
-      message: "What is your git hub username?",
-      name: "github",
-    },
-  ];
+    //These are the questions required if you ara an inter
+    const interQuestions = [
+      {
+        type: "input",
+        message: "What school do you currently attend to?",
+        name: "school",
+      },
+    ];
+    //These are the questions for my engineer
+    const engineerQuestions = [
+      {
+        type: "input",
+        message: "What is your git hub username?",
+        name: "github",
+      },
+    ];
 
-  const managerQuestions = [
-    {
-      type: "input",
-      message: "Please provide us with your office number",
-      name: "office",
-    },
-  ];
-  const addMemberQuestion = [
-    {
-      type: "confirm",
-      message: "Would you like to add another team memeber?",
-      name: "anotherColaborator",
-    },
-  ];
+    const managerQuestions = [
+      {
+        type: "input",
+        message: "Please provide us with your office number",
+        name: "office",
+      },
+    ];
+    const addMemberQuestion = [
+      {
+        type: "confirm",
+        message: "Would you like to add another team memeber?",
+        name: "anotherColaborator",
+      },
+    ];
 
-  const firstAnswer = await inquirer.prompt(requiredQuestion);
+    const firstAnswer = await inquirer.prompt(requiredQuestion);
 
-  let myRole;
+    let myRole;
+    let managerInfo;
+    let engineerInfo;
+    let internInfo;
 
-  if (firstAnswer.role === "Manager") {
-    myRole = await inquirer.prompt(managerQuestions);
-  } else if (firstAnswer.role === "Engineer"){
-    myRole = await inquirer.prompt(engineerQuestions)
-  } else if (firstAnswer.role === "Intern") {
-    myRole = await inquirer.prompt(interQuestions)
+    if (firstAnswer.role === "Manager") {
+      myRole = await inquirer.prompt(managerQuestions);
+      managerInfo = new Manager(
+        firstAnswer.name,
+        firstAnswer.id,
+        firstAnswer.email,
+        myRole.office
+        
+      );
+      console.log(managerInfo);
+      console.log(managerInfo.getRole());
+      createMember(managerInfo)
+    } else if (firstAnswer.role === "Engineer") {
+      myRole = await inquirer.prompt(engineerQuestions);
+      engineerInfo = new Engineer(
+        firstAnswer.name,
+        firstAnswer.id,
+        firstAnswer.email,
+        myRole.github
+      );
+      console.log(engineerInfo);
+      console.log(engineerInfo.getRole());
+      createMember(engineerInfo)
+    } else if (firstAnswer.role === "Intern") {
+      myRole = await inquirer.prompt(interQuestions);
+      internInfo = new Intern(
+        firstAnswer.name,
+        firstAnswer.id,
+        firstAnswer.email,
+        myRole.school
+      );
+      console.log(internInfo);
+      console.log(internInfo.getRole());
+      createMember(internInfo)
+      
+    }
+    //here i am pushing to the employee array
+    myEmployeeArr.push(myRole);
+
+    const addMember = await inquirer.prompt(addMemberQuestion);
+
+    if (addMember.anotherColaborator) {
+      allQuestions();      
+    } else {
+      console.log("Your html has been created");
+      finishHtml()
+      
+    }
+  } catch (err) {
+    return console.log(err);
   }
-  //here i am pushing to the employee array
-  myEmployeeArr.push(firstAnswer,myRole)
-  const addMember = await inquirer.prompt(addMemberQuestion);
+  //Here is where i write my html
+  function begginingHtml() {
+    try {
+      const header = `
+<!DOCTYPE html>
+<html lang="en">
 
-  if (addMember.anotherColaborator){
-    allQuestions()
-  }else{
-    console.log("Your html has been created")
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>My Team</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://kit.fontawesome.com/c502137733.js"></script>
+</head>
+
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12 jumbotron mb-3 team-heading">
+                <h1 class="text-center">My Team</h1>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="team-area col-12 d-flex justify-content-center">
+    `;
+      fs.appendFile(outputPath, header, function (err) {
+        if (err) {
+          console.log("Eroor on the header: ", err);
+        } else {
+          console.log("The header has been appended succesfully!!");
+        }
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  }
+  function createMember(member) {
+    return new Promise(function (resolve, reject) {
+      const name = member.getName();
+      const role = member.getRole();
+      const id = member.getId();
+      const email = member.getEmail();
+      let cardInfo = "";
+      if (role === "Manager") {
+        const officeNumber = member.getOfficeNumber();
+        cardInfo = `
+        <div class="card employee-card">
+    <div class="card-header">
+        <h2 class="card-title">${name}</h2>
+        <h3 class="card-title"><i class="fas fa-mug-hot mr-2"></i>${role}</h3>
+    </div>
+    <div class="card-body">
+        <ul class="list-group">
+            <li class="list-group-item">ID: ${id}</li>
+            <li class="list-group-item">Email: <a href="mailto:${email}">${email}</a></li>
+            <li class="list-group-item">Office number: ${officeNumber}</li>
+        </ul>
+    </div>
+</div>
+`;
+        fs.appendFile(outputPath, cardInfo, function (err) {
+          if (err) {
+            return reject;
+          } else {
+            return resolve;
+          }
+        });
+      } else if (role === "Engineer"){
+        const github = member.getGithub();
+        cardInfo = `
+        <div class="card employee-card">
+    <div class="card-header">
+        <h2 class="card-title">${name}</h2>
+        <h3 class="card-title"><i class="fas fa-glasses mr-2"></i>${role}</h3>
+    </div>
+    <div class="card-body">
+        <ul class="list-group">
+            <li class="list-group-item">ID: ${id}</li>
+            <li class="list-group-item">Email: <a href="mailto:${email}">${email}</a></li>
+            <li class="list-group-item">Git hub account: ${github}</li>
+        </ul>
+    </div>
+</div>
+`;
+        fs.appendFile(outputPath, cardInfo, function (err) {
+          if (err) {
+            return reject;
+          } else {
+            return resolve;
+          }
+        });
+      } else if (role === "Intern") {
+        const school = member.getSchool();
+        cardInfo = `
+        <div class="card employee-card">
+    <div class="card-header">
+        <h2 class="card-title">${name}</h2>
+        <h3 class="card-title"><i class="fas fa-user-graduate mr-2"></i>${role}</h3>
+    </div>
+    <div class="card-body">
+        <ul class="list-group">
+            <li class="list-group-item">ID: ${id}</li>
+            <li class="list-group-item">Email: <a href="mailto:${email}">${email}</a></li>
+            <li class="list-group-item">School: ${school}</li>
+        </ul>
+    </div>
+</div>
+`;
+        fs.appendFile(outputPath, cardInfo, function (err) {
+          if (err) {
+            return reject;
+          } else {
+            return resolve;
+          }
+        });
+      }
+    });
+  }
+  function finishHtml(){
+    try{
+          const footer=`
+    </body>
+    </html>`
+    fs.appendFile(outputPath, footer, function (err) {
+      if (err) {
+        console.log("Eroor on the footer: ", err);
+      } else {
+        console.log("The footer has succesfully been appended ");
+      }
+    });
+    }catch(err){
+      console.log("Error",err)
+    }
+
   }
 };
 
-allQuestions()
+allQuestions();
 
 
 // After the user has input all employees desired, call the `render` function (required
 // above) and pass in an array containing all employee objects; the `render` function will
 // generate and return a block of HTML including templated divs for each employee!
-render(myEmployeeArr)
-// After you have your html, you're now ready to create an HTML file using the HTML
-// returned from the `render` function. Now write it to a file named `team.html` in the
-// `output` folder. You can use the variable `outputPath` above target this location.
-// Hint: you may need to check if the `output` folder exists and create it if it
-// does not.
-
-
+render(myEmployeeArr);
 
 // HINT: each employee type (manager, engineer, or intern) has slightly different
 // information; write your code to ask different questions via inquirer depending on
@@ -118,4 +291,4 @@ render(myEmployeeArr)
 // for further information. Be sure to test out each class and verify it generates an
 // object with the correct structure and methods. This structure will be crucial in order
 // for the provided `render` function to work! ```
-module.exports=myEmployeeArr;
+module.exports = myEmployeeArr;
