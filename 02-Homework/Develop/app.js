@@ -94,8 +94,6 @@ const allQuestions = async () => {
         firstAnswer.email,
         myRole.office
       );
-      console.log(managerInfo);
-      console.log(managerInfo.getRole());
       createMember(managerInfo);
     } else if (firstAnswer.role === "Engineer") {
       myRole = await inquirer.prompt(engineerQuestions);
@@ -105,8 +103,6 @@ const allQuestions = async () => {
         firstAnswer.email,
         myRole.github
       );
-      console.log(engineerInfo);
-      console.log(engineerInfo.getRole());
       createMember(engineerInfo);
     } else if (firstAnswer.role === "Intern") {
       myRole = await inquirer.prompt(interQuestions);
@@ -116,8 +112,6 @@ const allQuestions = async () => {
         firstAnswer.email,
         myRole.school
       );
-      console.log(internInfo);
-      console.log(internInfo.getRole());
       createMember(internInfo);
     }
     //here i am pushing to the employee array
