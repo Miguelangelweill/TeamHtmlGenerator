@@ -34,7 +34,7 @@
 
   ## Test
 
-  ![Image](02-Homework/Assets/teamHtml2.gif)
+  ![Image](02-Homework/Assets/teamhtml2.gif)
 
   ## Git hub user name
   miguelangelWeill
