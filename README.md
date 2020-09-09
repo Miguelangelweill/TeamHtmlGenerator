@@ -34,6 +34,9 @@
 
   ## Test
 
+  ![Image](02-Homework/Assets/testing.gif)
+
+  ## Functionality
   ![Image](02-Homework/Assets/teamhtml2.gif)
 
   ## Git hub user name
